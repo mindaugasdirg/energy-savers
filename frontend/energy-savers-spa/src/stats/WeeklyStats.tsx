@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { EnergyPie, PieData } from "../plot/EnergyPie";
+import Divider from '@mui/material/Divider';
+
 
 const splitLabels = (json: {name: string, value: number}[]) => {
     const labels = json.map(x => x.name);
@@ -12,17 +14,27 @@ const splitLabels = (json: {name: string, value: number}[]) => {
 }
 
 export const WeeklyStats = () => {
-    const [data, setData] = useState<PieData | undefined>(undefined);
+    const [usedData, setUsedData] = useState<PieData | undefined>(undefined);
+    const [optimalData, setOptimalData] = useState<PieData | undefined>(undefined);
     
     useEffect(() => {
-        const url = "https://localhost:7091/Energy/categories?energyType=0";
+        const url = "https://localhost:7091/Energy/categories?energyType=";
+
+        const sendRequest = async (energyType: string) => {
+            const response = await fetch(url + energyType);
+            const json = await response.json();
+            return json;
+        }
 
         const fetchData = async () => {
           try {
-            const response = await fetch(url);
-            const json = await response.json();
-            console.log(json);
-            setData(splitLabels(json.categories));
+            const [usedResponse, optimalResponse] = await Promise.all([
+                await sendRequest("0"),
+                await sendRequest("1")
+            ])
+
+            setUsedData(splitLabels(usedResponse.categories));
+            setOptimalData(splitLabels(optimalResponse.categories));
           } catch (error) {
             console.log("error", error);
           }
@@ -31,5 +43,11 @@ export const WeeklyStats = () => {
         fetchData();
       }, []);
 
-    return ( data ? <EnergyPie data={data}/> : <p>No data</p>);
+    return ( 
+        <>
+            {usedData ? <EnergyPie data={usedData}/> : <p>No data</p> } 
+            <Divider light /> 
+            {optimalData ? <EnergyPie data={optimalData}/> : <p>No data</p> }
+        </>
+    );
 };
