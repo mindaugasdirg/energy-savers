@@ -2,68 +2,55 @@ import * as React from "react";
 import Fab from "@mui/material/Fab";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getVideoFeed, savePicture, stopCamera } from "./functions";
 
 export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [imgSrc, setImgSrc] = React.useState("");
-  const height = window.innerHeight;
-  const width = window.innerWidth;
+  const [height, setHeight] = React.useState(window.innerHeight);
+  const [width] = React.useState(window.innerWidth);
 
-  const getVideoFeed = () =>
-    navigator.mediaDevices
-      .getUserMedia({ video: { width, height }, audio: false })
-      .then((stream) => {
-        const feed = cameraFeedRef.current;
+  React.useEffect(() => {
+    const feed = cameraFeedRef.current;
 
-        if (!feed) {
-          return;
-        }
-
-        feed.srcObject = stream;
-        feed.play();
-      })
-      .catch((err) => {
-        console.error(`Error: ${err}`);
-      });
-
-  const stopCamera = () => {
-    const stream = cameraFeedRef.current?.srcObject;
-
-    if (!stream) {
+    if (!feed) {
       return;
     }
 
-    (stream as MediaStream).getTracks().forEach((t) => t.stop());
-  };
-
-  React.useEffect(() => {
-    getVideoFeed();
+    getVideoFeed(width, height, feed);
     return () => {
-      stopCamera();
+      stopCamera(feed.srcObject as MediaStream);
     };
   }, [cameraFeedRef]);
 
-  const paintPicture = () => {
-    const imgPreview = canvasRef.current;
+  const takePicture = () => {
     const video = cameraFeedRef.current;
-    if (!imgPreview || !video) {
+    const srcObject = video?.srcObject;
+    const imgPreview = canvasRef.current;
+    if (!imgPreview || !video || !srcObject) {
       return;
     }
 
-    const context = imgPreview.getContext("2d");
-    context?.drawImage(video, 0, 0, width, height);
-    setImgSrc(imgPreview.toDataURL("image/png"));
-  };
+    if (!srcObject) {
+      return;
+    }
 
-  const takePicture = () => {
-    paintPicture();
-    stopCamera();
+    const { imageData, height } = savePicture(video, imgPreview, width);
+    setHeight(height);
+    setImgSrc(imageData);
+
+    stopCamera(srcObject as MediaStream);
   };
 
   const revertPreview = () => {
     setImgSrc("");
-    getVideoFeed();
+    const feed = cameraFeedRef.current;
+
+    if (!feed) {
+      return;
+    }
+    getVideoFeed(width, height, feed);
   };
 
   return (
