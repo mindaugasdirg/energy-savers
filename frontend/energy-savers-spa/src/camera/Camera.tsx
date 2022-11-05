@@ -5,6 +5,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import SendIcon from '@mui/icons-material/Send';
 import { getVideoFeed, savePicture, stopCamera } from "./functions";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 
 export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
@@ -53,14 +54,26 @@ export const Camera = () => {
     stopCamera(srcObject as MediaStream);
   };
 
+  React.useEffect(() => {
+    const feed = cameraFeedRef.current;
+
+    if(!imgSrc && feed) {
+      getVideoFeed(width, height, feed);
+    }
+  }, [height, imgSrc, width]);
+
   const revertPreview = () => {
     setImgSrc("");
     const feed = cameraFeedRef.current;
-
+    
     if (!feed) {
       return;
     }
+
+    console.log("aa");
+    console.log("bb");
     getVideoFeed(width, height, feed);
+    console.log("cc");
   };
 
   return (
@@ -71,14 +84,14 @@ export const Camera = () => {
             <img src={imgSrc} alt="Preview" height={height} width={width} />
           </Grid>
           <Grid item xs={3}>
-            <Fab onClick={revertPreview}>
+            <IconButton onClick={revertPreview}>
               <ReplayIcon />
-            </Fab>
+            </IconButton>
           </Grid>
           <Grid item xs={3}>
-            <Fab onClick={() => console.log("sending")}>
+            <IconButton onClick={() => console.log("sending")}>
               <SendIcon />
-            </Fab>
+            </IconButton>
           </Grid>
         </Grid>
       ) : (
@@ -87,9 +100,9 @@ export const Camera = () => {
             <video ref={cameraFeedRef} height={height} width={width} playsInline={true} />
           </Grid>
           <Grid item xs={12} justifyContent="center">
-            <Fab onClick={takePicture}>
+            <IconButton onClick={takePicture}>
               <CameraAltIcon />
-            </Fab>
+            </IconButton>
           </Grid>
         </Grid>
       )}
