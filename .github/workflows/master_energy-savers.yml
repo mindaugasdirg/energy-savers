@@ -8,7 +8,7 @@ on:
     branches:
       - master
     paths:
-      - backend/EnergySavers.API
+      - backend/EnergySavers.API/**
       - '!frontend/**'
   workflow_dispatch:
 
