@@ -1,6 +1,6 @@
 export const getVideoFeed = (width: number, height: number, feed: HTMLVideoElement) =>
   navigator.mediaDevices
-    .getUserMedia({ video: { width, height }, audio: false })
+    .getUserMedia({ video: { width, height, facingMode: "environment" }, audio: false })
     .then((stream) => {
       feed.srcObject = stream;
       feed.play();
@@ -17,8 +17,6 @@ export const savePicture = (videoFeed: HTMLVideoElement, canvas: HTMLCanvasEleme
   if (isNaN(realHeight)) {
     realHeight = width / (4 / 3);
   }
-
-  // setHeight(realHeight);
 
   const context = canvas.getContext("2d");
   context?.drawImage(videoFeed, 0, 0, width, realHeight);

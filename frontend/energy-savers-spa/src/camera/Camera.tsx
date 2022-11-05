@@ -1,14 +1,16 @@
 import * as React from "react";
 import Fab from "@mui/material/Fab";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ReplayIcon from '@mui/icons-material/Replay';
+import SendIcon from '@mui/icons-material/Send';
 import { getVideoFeed, savePicture, stopCamera } from "./functions";
+import Grid from "@mui/material/Grid";
 
 export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [imgSrc, setImgSrc] = React.useState("");
-  const [height, setHeight] = React.useState(window.innerHeight);
+  const [height, setHeight] = React.useState(window.innerHeight - 500);
   const [width] = React.useState(window.innerWidth);
 
   React.useEffect(() => {
@@ -20,7 +22,7 @@ export const Camera = () => {
 
     getVideoFeed(width, height, feed);
     return () => {
-      stopCamera(feed.srcObject as MediaStream);
+      feed.srcObject && stopCamera(feed.srcObject as MediaStream);
     };
   }, [cameraFeedRef, height, width]);
 
@@ -56,19 +58,32 @@ export const Camera = () => {
   return (
     <>
       {imgSrc ? (
-        <>
-          <Fab onClick={revertPreview}>
-            <ArrowBackIcon />
-          </Fab>
-          <img src={imgSrc} alt="Preview" height={height} width={width} />
-        </>
+        <Grid container>
+          <Grid item xs={12}>
+            <img src={imgSrc} alt="Preview" height={height} width={width} />
+          </Grid>
+          <Grid item xs={3}>
+            <Fab onClick={revertPreview}>
+              <ReplayIcon />
+            </Fab>
+          </Grid>
+          <Grid item xs={3}>
+            <Fab onClick={() => console.log("sending")}>
+              <SendIcon />
+            </Fab>
+          </Grid>
+        </Grid>
       ) : (
-        <>
-          <video ref={cameraFeedRef} height={height} width={width} />
-          <Fab onClick={takePicture}>
-            <CameraAltIcon />
-          </Fab>
-        </>
+        <Grid container>
+          <Grid item xs={12}>
+            <video ref={cameraFeedRef} height={height} width={width} playsInline={true} />
+          </Grid>
+          <Grid item xs={12} justifyContent="center">
+            <Fab onClick={takePicture}>
+              <CameraAltIcon />
+            </Fab>
+          </Grid>
+        </Grid>
       )}
       <canvas style={{ display: "none" }} ref={canvasRef} height={height} width={width} />
     </>
