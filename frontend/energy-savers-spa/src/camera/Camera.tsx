@@ -1,11 +1,14 @@
 import * as React from "react";
-import Fab from "@mui/material/Fab";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import ReplayIcon from '@mui/icons-material/Replay';
-import SendIcon from '@mui/icons-material/Send';
+import ReplayIcon from "@mui/icons-material/Replay";
+import SendIcon from "@mui/icons-material/Send";
 import { getVideoFeed, savePicture, stopCamera } from "./functions";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
+import { useStateMachine } from "../common/hooks";
+import { PhotoCaptureControls } from "./Controls/PhotoCaptureControls";
+import { PhotoPreviewControls } from "./Controls/PhotoPreviewControls";
+import { AlternativeSuggestions } from "./Controls/AlternativeSuggestions";
 
 export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
@@ -35,6 +38,26 @@ export const Camera = () => {
     };
   }, [cameraFeedRef, width]);
 
+  React.useEffect(() => {
+    const feed = cameraFeedRef.current;
+
+    if (!imgSrc && feed) {
+      getVideoFeed(width, height, feed);
+    }
+  }, [height, imgSrc, width]);
+
+  const revertPreview = () => {
+    setImgSrc("");
+    const feed = cameraFeedRef.current;
+
+    if (!feed) {
+      return;
+    }
+
+    getVideoFeed(width, height, feed);
+    setCurrentControl(0);
+  };
+
   const takePicture = () => {
     const video = cameraFeedRef.current;
     const srcObject = video?.srcObject;
@@ -52,60 +75,60 @@ export const Camera = () => {
     setImgSrc(imageData);
 
     stopCamera(srcObject as MediaStream);
+    setCurrentControl(1);
   };
 
-  React.useEffect(() => {
-    const feed = cameraFeedRef.current;
+  const suggestions = React.useMemo(() => [
+    {
+      imgSrc: "https://images.heb.com/is/image/HEBGrocery/001876588",
+      name: "Chips 1",
+      saving: "100g less CO2",
+      score: 15
+    },
+    {
+      imgSrc: "https://images.heb.com/is/image/HEBGrocery/001876588",
+      name: "Chips 2",
+      saving: "150g less CO2",
+      score: 20
+    },
+    {
+      imgSrc: "https://images.heb.com/is/image/HEBGrocery/001876588",
+      name: "Chips 3",
+      saving: "10g less CO2",
+      score: 1
+    },
+  ], []);
 
-    if(!imgSrc && feed) {
-      getVideoFeed(width, height, feed);
-    }
-  }, [height, imgSrc, width]);
+  const onSuggestionSelected = (index: number) => {
+    console.log(`clicked suggestion: ${index}`);
+    setCurrentControl(0);
+  }
 
-  const revertPreview = () => {
-    setImgSrc("");
-    const feed = cameraFeedRef.current;
-    
-    if (!feed) {
-      return;
-    }
+  const sendPhoto = () => {
+    console.log("sending photo");
+    setCurrentControl(2);
+  }
 
-    console.log("aa");
-    console.log("bb");
-    getVideoFeed(width, height, feed);
-    console.log("cc");
-  };
+  const [currentControl, setCurrentControl] = useStateMachine([
+    <PhotoCaptureControls takePicture={takePicture} />,
+    <PhotoPreviewControls sendPhoto={sendPhoto} revertPreview={revertPreview} />,
+    <AlternativeSuggestions onSuggestionClicked={onSuggestionSelected} suggestions={suggestions} />,
+  ]);
 
   return (
     <>
-      {imgSrc ? (
-        <Grid container>
-          <Grid item xs={12}>
+      <Grid container>
+        <Grid item xs={12}>
+          {imgSrc ? (
             <img src={imgSrc} alt="Preview" height={height} width={width} />
-          </Grid>
-          <Grid item xs={3}>
-            <IconButton onClick={revertPreview}>
-              <ReplayIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={3}>
-            <IconButton onClick={() => console.log("sending")}>
-              <SendIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-      ) : (
-        <Grid container>
-          <Grid item xs={12}>
+          ) : (
             <video ref={cameraFeedRef} height={height} width={width} playsInline={true} />
-          </Grid>
-          <Grid item xs={12} justifyContent="center">
-            <IconButton onClick={takePicture}>
-              <CameraAltIcon />
-            </IconButton>
-          </Grid>
+          )}
         </Grid>
-      )}
+        <Grid item xs={12} container justifyContent="center">
+          {currentControl}
+        </Grid>
+      </Grid>
       <canvas style={{ display: "none" }} ref={canvasRef} height={height} width={width} />
     </>
   );

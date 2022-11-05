@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 export const useFetch = <T>(url: string, defaultValue?: T) => {
     const [value, setValue] = React.useState<T | undefined>(defaultValue);
@@ -28,3 +28,9 @@ export const useFetch = <T>(url: string, defaultValue?: T) => {
 
     return value;
 };
+
+export const useStateMachine = <T>(states: T[], defaultState = 0) => {
+  const [currentState, setCurrentState] = React.useState(defaultState);
+
+  return [states[currentState], setCurrentState] as const;
+}
