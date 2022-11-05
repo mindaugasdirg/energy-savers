@@ -1,0 +1,38 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy frontend
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["master"]
+    paths:
+      - frontend/energy-savers-spa/**
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 16.13
+      - name: npm ci
+        run: npm ci
+      - name: Build
+        run: npm build
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2.4
+        with:
+          publish-dir: './frontend/energy-savers-spa/build'
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
