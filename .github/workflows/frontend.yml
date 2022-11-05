@@ -6,6 +6,7 @@ on:
     branches: ["master"]
     paths:
       - frontend/energy-savers-spa/**
+      - '!backend/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -27,12 +28,15 @@ jobs:
         with:
           node-version: 16.13
       - name: npm ci
+        working-directory: ./frontend/energy-savers-spa
         run: npm ci
       - name: Build
+        working-directory: ./frontend/energy-savers-spa
         run: npm build
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2.4
         with:
           publish-dir: './frontend/energy-savers-spa/build'
+        env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
