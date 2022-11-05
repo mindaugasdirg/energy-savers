@@ -10,8 +10,8 @@ export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [imgSrc, setImgSrc] = React.useState("");
-  const [height, setHeight] = React.useState(window.innerHeight);
-  const [width] = React.useState(window.innerWidth);
+  const width = React.useMemo(() => window.innerWidth, []);
+  const height = React.useMemo(() => width / (4 / 3), [width]);
 
   React.useEffect(() => {
     const feed = cameraFeedRef.current;
@@ -20,19 +20,11 @@ export const Camera = () => {
       return;
     }
 
-    let realHeight = feed.videoHeight / (feed.videoWidth / width);
-
-    if (isNaN(realHeight)) {
-      console.log("Cannot determine real height.");
-      realHeight = width / (4 / 3);
-    }
-
-    setHeight(realHeight);
-    getVideoFeed(width, realHeight, feed);
+    getVideoFeed(width, height, feed);
     return () => {
       feed.srcObject && stopCamera(feed.srcObject as MediaStream);
     };
-  }, [cameraFeedRef, width]);
+  }, [cameraFeedRef, width, height]);
 
   React.useEffect(() => {
     const feed = cameraFeedRef.current;
@@ -97,6 +89,7 @@ export const Camera = () => {
 
   const onSuggestionSelected = (index: number) => {
     console.log(`clicked suggestion: ${index}`);
+    getVideoFeed(width, height, feed);
     setCurrentControl(0);
   }
 
