@@ -58,8 +58,7 @@ export const Camera = () => {
       return;
     }
 
-    const { imageData, height } = savePicture(video, imgPreview, width);
-    setHeight(height);
+    const { imageData } = savePicture(video, imgPreview, width);
     setImgSrc(imageData);
 
     stopCamera(srcObject as MediaStream);
@@ -89,7 +88,7 @@ export const Camera = () => {
 
   const onSuggestionSelected = (index: number) => {
     console.log(`clicked suggestion: ${index}`);
-    getVideoFeed(width, height, feed);
+    revertPreview();
     setCurrentControl(0);
   }
 
