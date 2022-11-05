@@ -14,10 +14,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EnergySavers.Abstractions\EnergySavers.Abstractions.csproj" />
-    <ProjectReference Include="..\EnergySavers.DB\EnergySavers.DB.csproj" />
-    <ProjectReference Include="..\EnergySavers.Core\EnergySavers.Core.csproj" />
-  </ItemGroup>
-
 </Project>
