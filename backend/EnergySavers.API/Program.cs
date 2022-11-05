@@ -1,5 +1,7 @@
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+var url = $"http://0.0.0.0:{port}";
 
 builder.Services.AddCors(options =>
 {
@@ -35,4 +37,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+if (app.Environment.IsDevelopment())
+{
+    Console.WriteLine("Local deployment. Using default url");
+    app.Run();
+}
+else
+{
+    Console.WriteLine($"Release deployment. Using default {url}");
+    app.Run(url);
+}
