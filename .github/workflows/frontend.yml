@@ -37,6 +37,7 @@ jobs:
         uses: nwtgck/actions-netlify@v1.2.4
         with:
           publish-dir: './frontend/energy-savers-spa/build'
+          production-deploy: 'true'
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
