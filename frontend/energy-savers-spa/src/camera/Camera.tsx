@@ -22,7 +22,7 @@ export const Camera = () => {
     return () => {
       stopCamera(feed.srcObject as MediaStream);
     };
-  }, [cameraFeedRef]);
+  }, [cameraFeedRef, height, width]);
 
   const takePicture = () => {
     const video = cameraFeedRef.current;
