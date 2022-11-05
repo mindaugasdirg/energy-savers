@@ -9,7 +9,7 @@ namespace EnergySavers.API.Controllers
         [HttpGet]
         public IActionResult GetProfile(string id)
         {
-            return Ok();
+            return Ok("UserName_goes_here");
         }
     }
 }
