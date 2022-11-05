@@ -32,7 +32,7 @@ jobs:
         run: npm ci
       - name: Build
         working-directory: ./frontend/energy-savers-spa
-        run: npm build
+        run: npm run build
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2.4
         with:
