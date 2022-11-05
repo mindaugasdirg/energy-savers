@@ -12,9 +12,9 @@ namespace EnergySavers.API.Controllers
             return Ok();
         }
 
-        public IActionResult GetUserActivities()
-        {
-            return Ok(new List<object>());
-        }
+        // public IActionResult GetUserActivities()
+        // {
+        //     return Ok(new List<object>());
+        // }
     }
 }
