@@ -10,7 +10,7 @@ export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [imgSrc, setImgSrc] = React.useState("");
-  const [height, setHeight] = React.useState(window.innerHeight - 500);
+  const [height, setHeight] = React.useState(window.innerHeight);
   const [width] = React.useState(window.innerWidth);
 
   React.useEffect(() => {
@@ -20,11 +20,19 @@ export const Camera = () => {
       return;
     }
 
-    getVideoFeed(width, height, feed);
+    let realHeight = feed.videoHeight / (feed.videoWidth / width);
+
+    if (isNaN(realHeight)) {
+      console.log("Cannot determine real height.");
+      realHeight = width / (4 / 3);
+    }
+
+    setHeight(realHeight);
+    getVideoFeed(width, realHeight, feed);
     return () => {
       feed.srcObject && stopCamera(feed.srcObject as MediaStream);
     };
-  }, [cameraFeedRef, height, width]);
+  }, [cameraFeedRef, width]);
 
   const takePicture = () => {
     const video = cameraFeedRef.current;

@@ -31,7 +31,7 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <AppBar elevation={0}>
+      <AppBar position="static" elevation={0}>
         <Toolbar>
           <Typography variant="h6" component="h1" sx={{ flexGrow: 1, display: 'block' }}>Greenie</Typography>
           <Typography variant="h6">23</Typography>
