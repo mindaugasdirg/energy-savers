@@ -1,10 +1,6 @@
 import * as React from "react";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import ReplayIcon from "@mui/icons-material/Replay";
-import SendIcon from "@mui/icons-material/Send";
 import { getVideoFeed, savePicture, stopCamera } from "./functions";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
 import { useStateMachine } from "../common/hooks";
 import { PhotoCaptureControls } from "./Controls/PhotoCaptureControls";
 import { PhotoPreviewControls } from "./Controls/PhotoPreviewControls";
