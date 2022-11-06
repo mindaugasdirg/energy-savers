@@ -49,7 +49,7 @@ export const themeOptions = {
       fontSize: 14,
     },
     h6: {
-      fontSize: 20,
+      fontSize: 18,
     },
   },
 };

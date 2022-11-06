@@ -7,11 +7,14 @@ import { PhotoPreviewControls } from "./Controls/PhotoPreviewControls";
 import { AlternativeSuggestions } from "./Controls/AlternativeSuggestions";
 import { SuggestionLoading } from "./Controls/SuggestionLoading";
 import { Suggestion } from "./Controls/types";
+import { useRecoilState } from "recoil";
+import { scoreValue } from "../common/atoms";
 
 export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [imgSrc, setImgSrc] = React.useState("");
+  const [score, setScore] = useRecoilState(scoreValue);
   // const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
   const suggestions = React.useMemo<Suggestion[]>(() => [
     {
@@ -84,6 +87,7 @@ export const Camera = () => {
 
   const onSuggestionSelected = (index: number) => {
     console.log(`clicked suggestion: ${index}`);
+    setScore(score + suggestions[index].value);
     revertPreview();
     setCurrentControl(0);
   }

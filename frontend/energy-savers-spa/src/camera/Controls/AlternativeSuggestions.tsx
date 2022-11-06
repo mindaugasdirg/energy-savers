@@ -11,15 +11,15 @@ interface Props {
 
 export const AlternativeSuggestions = ({ suggestions, onSuggestionClicked }: Props) => {
   return (
-    <Grid container direction="column" spacing={2} sx={{ marginLeft: "16px", marginRight: "16px" }}>
-      <Grid item sx={{ marginTop: "-16px", marginBottom: "32px" }}>
+    <Grid container direction="column" spacing={2} sx={{ marginLeft: "24px", marginRight: "24px" }}>
+      <Grid item sx={{ marginBottom: "32px" }}>
         <HighlightTypography variant="h2">More green picks</HighlightTypography>
       </Grid>
       <Grid container direction="column" spacing={6}>
         {suggestions.map((suggestion, index) =>
           <Grid item container wrap="nowrap" key={index}>
-            <Grid item sx={{ maxWidth: "96px", maxHeight: "96px", marginRight: "16px" }}>
-              <img alt={suggestion.label} src={suggestion.url} width={96} height={96} />
+            <Grid item sx={{ maxWidth: "80px", maxHeight: "80px", marginRight: "16px" }}>
+              <img alt={suggestion.label} src={suggestion.url} width={80} height={80} />
             </Grid>
             <Grid item container direction="column" xs={6} sx={{ marginTop: "16px" }}>
               <Grid item zeroMinWidth>
