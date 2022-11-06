@@ -6,11 +6,13 @@ import { PhotoCaptureControls } from "./Controls/PhotoCaptureControls";
 import { PhotoPreviewControls } from "./Controls/PhotoPreviewControls";
 import { AlternativeSuggestions } from "./Controls/AlternativeSuggestions";
 import { SuggestionLoading } from "./Controls/SuggestionLoading";
+import { Suggestion } from "./Controls/types";
 
 export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [imgSrc, setImgSrc] = React.useState("");
+  const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
   const width = React.useMemo(() => window.innerWidth, []);
   const height = React.useMemo(() => width / (4 / 3), [width]);
 
@@ -66,27 +68,6 @@ export const Camera = () => {
     setCurrentControl(1);
   };
 
-  const suggestions = React.useMemo(() => [
-    {
-      imgSrc: "https://images.heb.com/is/image/HEBGrocery/001876588",
-      name: "Chips 1",
-      saving: "100g less CO2",
-      score: 15
-    },
-    {
-      imgSrc: "https://images.heb.com/is/image/HEBGrocery/001876588",
-      name: "Chips 2",
-      saving: "150g less CO2",
-      score: 20
-    },
-    {
-      imgSrc: "https://images.heb.com/is/image/HEBGrocery/001876588",
-      name: "Chips 3",
-      saving: "10g less CO2",
-      score: 1
-    },
-  ], []);
-
   const onSuggestionSelected = (index: number) => {
     console.log(`clicked suggestion: ${index}`);
     revertPreview();
@@ -99,9 +80,10 @@ export const Camera = () => {
   }
 
   // TODO: Update when API returns suggestions
-  const onSuggestionsLoaded = (labels: string[]) => {
+  const onSuggestionsLoaded = (suggestions: Suggestion[]) => {
     console.log("Got suggestions:");
-    console.log(labels);
+    console.log(suggestions);
+    setSuggestions(suggestions);
     setCurrentControl(3);
   }
 

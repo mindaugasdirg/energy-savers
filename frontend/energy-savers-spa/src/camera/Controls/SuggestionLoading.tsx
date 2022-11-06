@@ -3,10 +3,11 @@ import Container from "@mui/material/Container";
 import React from "react";
 import { getApiUrl } from "../../common/apiUtilities";
 import { usePost } from "../../common/hooks";
+import { Suggestion } from "./types";
 
 interface Props {
     imgData: string;
-    onLoad: (responses: string[]) => void;
+    onLoad: (responses: Suggestion[]) => void;
 }
 
 export const SuggestionLoading = ({ imgData, onLoad }: Props) => {
