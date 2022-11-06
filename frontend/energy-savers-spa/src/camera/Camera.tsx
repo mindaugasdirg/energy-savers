@@ -109,7 +109,7 @@ export const Camera = () => {
     <PhotoPreviewControls sendPhoto={sendPhoto} revertPreview={revertPreview} />,
     <SuggestionLoading imgData={imgSrc} onLoad={onSuggestionsLoaded} />,
     <AlternativeSuggestions onSuggestionClicked={onSuggestionSelected} suggestions={suggestions} />,
-  ], 3);
+  ]);
 
   return (
     <>
