@@ -29,7 +29,7 @@ export const AlternativeSuggestions = ({ suggestions, onSuggestionClicked }: Pro
               </Grid>
             </Grid>
             <Grid item>
-              <Button onClick={() => onSuggestionClicked(index)}>
+              <Button variant="contained" onClick={() => onSuggestionClicked(index)}>
                 +{suggestion.value}
               </Button>
             </Grid>
