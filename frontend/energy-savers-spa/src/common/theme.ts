@@ -39,6 +39,10 @@ export const themeOptions = {
     },
     h2: {
       fontWeight: 700,
+      fontSize: 24,
+    },
+    h3: {
+      fontWeight: 700,
       fontSize: 25,
     },
     subtitle2: {

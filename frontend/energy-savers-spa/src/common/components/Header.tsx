@@ -9,7 +9,7 @@ export const Header = () => {
         <HighlightTypography variant="h1" sx={{ flexGrow: 1, display: "block" }}>
           Greenie
         </HighlightTypography>
-        <HighlightTypography variant="h2">23</HighlightTypography>
+        <HighlightTypography variant="h3">23</HighlightTypography>
         <LightModeIcon sx={{ color: "yellow" }} />
       </Toolbar>
     </AppBar>
