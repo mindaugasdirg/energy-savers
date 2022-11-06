@@ -15,21 +15,21 @@ export const Camera = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [imgSrc, setImgSrc] = React.useState("");
   const [score, setScore] = useRecoilState(scoreValue);
-  // const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
-  const suggestions = React.useMemo<Suggestion[]>(() => [
-    {
-      label: "Option 1",
-      provider: "Amazon",
-      url: "https://expertreviews.b-cdn.net/sites/expertreviews/files/2022/03/best_coffee_cup_-_lead_image.jpg",
-      value: 15
-    },
-    {
-      label: "Option 2 with long name",
-      provider: "AliExpress",
-      url: "https://expertreviews.b-cdn.net/sites/expertreviews/files/2022/03/best_coffee_cup_-_lead_image.jpg",
-      value: 15
-    },
-  ], []);
+  const [suggestions, setSuggestions] = React.useState<Suggestion[]>([]);
+  // const suggestions = React.useMemo<Suggestion[]>(() => [
+  //   {
+  //     label: "Option 1",
+  //     provider: "Amazon",
+  //     url: "https://expertreviews.b-cdn.net/sites/expertreviews/files/2022/03/best_coffee_cup_-_lead_image.jpg",
+  //     value: 15
+  //   },
+  //   {
+  //     label: "Option 2 with long name",
+  //     provider: "AliExpress",
+  //     url: "https://expertreviews.b-cdn.net/sites/expertreviews/files/2022/03/best_coffee_cup_-_lead_image.jpg",
+  //     value: 15
+  //   },
+  // ], []);
   const width = React.useMemo(() => window.innerWidth, []);
   const height = React.useMemo(() => width / (4 / 3), [width]);
 
@@ -97,11 +97,10 @@ export const Camera = () => {
     setCurrentControl(2);
   }
 
-  // TODO: Update when API returns suggestions
   const onSuggestionsLoaded = (suggestions: Suggestion[]) => {
     console.log("Got suggestions:");
     console.log(suggestions);
-    // setSuggestions(suggestions);
+    setSuggestions(suggestions);
     setCurrentControl(3);
   }
 
