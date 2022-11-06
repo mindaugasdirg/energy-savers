@@ -31,7 +31,7 @@ export const Camera = () => {
   //   },
   // ], []);
   const width = React.useMemo(() => window.innerWidth, []);
-  const height = React.useMemo(() => width / (4 / 3), [width]);
+  const height = React.useMemo(() => width * 12 / 9, [width]);
 
   React.useEffect(() => {
     const feed = cameraFeedRef.current;
@@ -62,8 +62,8 @@ export const Camera = () => {
       return;
     }
 
-    getVideoFeed(feed);
     setCurrentControl(0);
+    getVideoFeed(feed);
   };
 
   const takePicture = () => {
@@ -78,7 +78,7 @@ export const Camera = () => {
       return;
     }
 
-    const { imageData } = savePicture(video, imgPreview, width);
+    const { imageData } = savePicture(video, imgPreview, height, width);
     setImgSrc(imageData);
 
     stopCamera(srcObject as MediaStream);
@@ -119,13 +119,13 @@ export const Camera = () => {
             <img src={imgSrc} alt="Preview" height={height} width={width} />
           ) : (
             <video ref={cameraFeedRef} height={height} width={width} playsInline={true} />
-          )}
+            )}
+            <canvas style={{ display: "none" }} ref={canvasRef} height={height} width={width} />
         </Grid>
         <Grid item xs={12} container justifyContent="center">
           {currentControl}
         </Grid>
       </Grid>
-      <canvas style={{ display: "none" }} ref={canvasRef} height={height} width={width} />
     </>
   );
 };

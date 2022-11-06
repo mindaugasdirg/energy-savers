@@ -10,12 +10,12 @@ interface Props {
 
 export const PhotoPreviewControls = ({ revertPreview, sendPhoto }: Props) => (
   <>
-    <Grid item container xs={6} justifyContent="center">
+    <Grid item container xs={6} justifyContent="center" sx={{ marginTop: "32px" }}>
       <IconButton onClick={revertPreview}>
         <ReplayIcon />
       </IconButton>
     </Grid>
-    <Grid item container xs={6} justifyContent="center">
+    <Grid item container xs={6} justifyContent="center" sx={{ marginTop: "32px" }}>
       <IconButton onClick={sendPhoto}>
         <SendIcon />
       </IconButton>
