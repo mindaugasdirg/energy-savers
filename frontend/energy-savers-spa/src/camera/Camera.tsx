@@ -23,7 +23,7 @@ export const Camera = () => {
       return;
     }
 
-    getVideoFeed(width, height, feed);
+    getVideoFeed(feed);
     return () => {
       feed.srcObject && stopCamera(feed.srcObject as MediaStream);
     };
@@ -33,7 +33,7 @@ export const Camera = () => {
     const feed = cameraFeedRef.current;
 
     if (!imgSrc && feed) {
-      getVideoFeed(width, height, feed);
+      getVideoFeed(feed);
     }
   }, [height, imgSrc, width]);
 
@@ -45,7 +45,7 @@ export const Camera = () => {
       return;
     }
 
-    getVideoFeed(width, height, feed);
+    getVideoFeed(feed);
     setCurrentControl(0);
   };
 

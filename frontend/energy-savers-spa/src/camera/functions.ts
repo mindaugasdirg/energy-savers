@@ -1,6 +1,6 @@
-export const getVideoFeed = (width: number, height: number, feed: HTMLVideoElement) =>
+export const getVideoFeed = (feed: HTMLVideoElement) =>
   navigator.mediaDevices
-    .getUserMedia({ video: { width, height, facingMode: "environment" }, audio: false })
+    .getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1920 }, facingMode: "environment" }, audio: false })
     .then((stream) => {
       feed.srcObject = stream;
       feed.play();
