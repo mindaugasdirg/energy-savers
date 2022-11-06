@@ -5,6 +5,7 @@ import { useStateMachine } from "../common/hooks";
 import { PhotoCaptureControls } from "./Controls/PhotoCaptureControls";
 import { PhotoPreviewControls } from "./Controls/PhotoPreviewControls";
 import { AlternativeSuggestions } from "./Controls/AlternativeSuggestions";
+import { SuggestionLoading } from "./Controls/SuggestionLoading";
 
 export const Camera = () => {
   const cameraFeedRef = React.useRef<HTMLVideoElement>(null);
@@ -97,9 +98,17 @@ export const Camera = () => {
     setCurrentControl(2);
   }
 
+  // TODO: Update when API returns suggestions
+  const onSuggestionsLoaded = (labels: string[]) => {
+    console.log("Got suggestions:");
+    console.log(labels);
+    setCurrentControl(3);
+  }
+
   const [currentControl, setCurrentControl] = useStateMachine([
     <PhotoCaptureControls takePicture={takePicture} />,
     <PhotoPreviewControls sendPhoto={sendPhoto} revertPreview={revertPreview} />,
+    <SuggestionLoading imgData={imgSrc} onLoad={onSuggestionsLoaded} />,
     <AlternativeSuggestions onSuggestionClicked={onSuggestionSelected} suggestions={suggestions} />,
   ]);
 
