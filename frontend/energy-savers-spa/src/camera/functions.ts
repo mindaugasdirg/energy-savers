@@ -18,6 +18,6 @@ export const savePicture = (videoFeed: HTMLVideoElement, canvas: HTMLCanvasEleme
   const context = canvas.getContext("2d");
   console.log(`video resolution: height: ${height}; width: ${width}`);
   context?.drawImage(videoFeed, 0, 0, width, height);
-  const imageData = canvas.toDataURL("image/png");
+  const imageData = canvas.toDataURL("image/png", 1.0);
   return { imageData, height: height, width };
 };
