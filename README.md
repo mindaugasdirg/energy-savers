@@ -1,4 +1,4 @@
-# energy-savers
+# Greenies
 
 As part of Junction 2022, we are tackling the problem of current Energy crisis in Finland and across the Europe.The idea of Greenies is to help users make Energy conserving/climate friendly options when they are
 out there shopping in a supermarket or purchasing clothes, or anything else. Our app simply let users scan the product of their choice and give them more energy effiencient solutions, thanks to the powerful recommendation system 
