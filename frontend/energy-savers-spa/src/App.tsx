@@ -44,7 +44,7 @@ function App() {
           <LightModeIcon sx={{ color: "yellow" }} />
         </Toolbar>
       </AppBar>
-      <Paper elevation={1}>
+      <Paper elevation={1} sx={{ boxShadow: "none" }}>
         <Router />
       </Paper>
       <Paper
