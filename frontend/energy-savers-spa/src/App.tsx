@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { Router } from './Router';
 import { useNavigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +11,8 @@ import Paper from '@mui/material/Paper';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from './common/theme';
 
 const links = [
   { link: "/", label: "Home", icon: <HomeIcon /> },
@@ -29,7 +30,7 @@ function App() {
   }, [currentTab]);
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <AppBar position="static" elevation={0}>
         <Toolbar>
@@ -52,7 +53,7 @@ function App() {
           )}
         </BottomNavigation>
       </Paper>
-    </>
+    </ThemeProvider>
   );
 }
 
