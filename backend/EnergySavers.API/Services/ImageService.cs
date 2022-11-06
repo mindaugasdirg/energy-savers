@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using EnergySavers.Api.Models.Options;
+// using EnergySavers.Api.Models.Options;
 using Google.Cloud.Vision.V1;
 using Microsoft.Extensions.Options;
 
@@ -18,11 +18,12 @@ namespace EnergySavers.API.Services
     public class ImageService : IImageService
     {
 		private HttpClient httpClient = new HttpClient();
-		private readonly ClimateApiOptions options;
+		// private readonly ClimateApiOptions options;
 
-		public ImageService(IOptions<ClimateApiOptions> options)
+		public ImageService()
+		// public ImageService(IOptions<ClimateApiOptions> options)
 		{
-			this.options = options.Value;
+			// this.options = options.Value;
 		}
 
         public List<string> ResolveLabels(string imageBase64)
