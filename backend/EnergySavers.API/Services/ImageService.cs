@@ -41,7 +41,7 @@ namespace EnergySavers.API.Services
 			var images = this.GetSimilarImages(imageBase64);
 
 			var item1 = new ItemResponse(labels[0], images[0], this.GetProvider(), this.GetValue());
-			var item2 = new ItemResponse(labels[0], images[1], this.GetProvider(), this.GetValue());
+			var item2 = new ItemResponse(labels[1] ?? labels[0], images[1], this.GetProvider(), this.GetValue());
 
 			return new[]{item1, item2}.ToList();
 		}
