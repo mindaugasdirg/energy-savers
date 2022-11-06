@@ -11,7 +11,8 @@ builder.Services.AddCors(options =>
                       policy  =>
                       {
                           policy.WithOrigins("http://localhost:3000",
-                                              "https://localhost")
+                                              "https://localhost",
+                                              "https://energy-savers.netlify.app/")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
