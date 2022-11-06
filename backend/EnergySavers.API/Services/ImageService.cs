@@ -53,7 +53,7 @@ namespace EnergySavers.API.Services
             var client = ImageAnnotatorClient.Create();
             var image = Image.FromBytes(binaryImage);
             var detectedLabels = client.DetectLabels(image);
-			labels = detectedLabels.OrderBy(x => x.Score).Select(label => label.Description).ToList();
+			labels = detectedLabels.OrderByDescending(x => x.Score).Select(label => label.Description).ToList();
 			return labels;
 		}
 
@@ -67,7 +67,10 @@ namespace EnergySavers.API.Services
             var request = new AnnotateImageRequest
             {
                 Image = image,
-                Features = { new Feature { Type = Feature.Types.Type.WebDetection, MaxResults = 2 } }
+                Features = {
+					new Feature { Type = Feature.Types.Type.WebDetection, MaxResults = 10 },
+					new Feature { Type = Feature.Types.Type.ImageProperties, MaxResults = 10 },
+				}
             };
 
             var response = client.BatchAnnotateImages(new[] { request });
