@@ -17,7 +17,12 @@ namespace EnergySavers.API.Controllers
         [HttpPost]
         public IActionResult PostImage(ImageRequest image)
         {
-			var result = imageService.ResolveLabels(image.Image);
+			var labels = imageService.ResolveLabels(image.Image);
+			var images = imageService.GetSimilarImages(image.Image);
+			var result = new{
+				Label = labels[0],
+				Images = images
+			};
 
             return Ok(result);
         }
