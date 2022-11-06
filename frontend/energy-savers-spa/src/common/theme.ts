@@ -32,6 +32,22 @@ export const themeOptions = {
       },
     },
   },
+  typography: {
+    h1: {
+      fontWeight: 700,
+      fontSize: 38,
+    },
+    h2: {
+      fontWeight: 700,
+      fontSize: 25,
+    },
+    subtitle2: {
+      fontSize: 14,
+    },
+    h6: {
+      fontSize: 20,
+    },
+  },
 };
 
 export const theme = createTheme(themeOptions);
