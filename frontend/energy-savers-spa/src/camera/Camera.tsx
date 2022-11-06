@@ -31,7 +31,7 @@ export const Camera = () => {
   //   },
   // ], []);
   const width = React.useMemo(() => window.innerWidth, []);
-  const height = React.useMemo(() => width * 10 / 9, [width]);
+  const height = React.useMemo(() => width, [width]);
 
   React.useEffect(() => {
     const feed = cameraFeedRef.current;
