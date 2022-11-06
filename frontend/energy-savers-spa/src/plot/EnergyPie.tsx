@@ -2,7 +2,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 import Box from "@mui/material/Box";
-import { red } from "@mui/material/colors";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -44,7 +43,9 @@ export const EnergyPie = ({ data }: { data: PieData }) => (
       justifyContent: "center",
     }}
   >
-    <h1>Good Morning Joey!</h1>
+    <h4 style={{ alignSelf: "baseline", paddingLeft: "20px" }}>
+      Good Morning Joey!
+    </h4>
     <Box
       sx={{
         width: "90%",
