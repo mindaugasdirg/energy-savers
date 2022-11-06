@@ -72,9 +72,11 @@ namespace EnergySavers.API.Services
 
             var response = client.BatchAnnotateImages(new[] { request });
 
-            var results = response.Responses[0].WebDetection.FullMatchingImages;
-            
-            return results.Select(x => x.Url).ToList();
+            var result = response.Responses[0].WebDetection;
+
+			return result?.FullMatchingImages.Count >= 2 ?
+				result.FullMatchingImages.Select(x => x.Url).ToList()
+				: result?.VisuallySimilarImages.Select(x => x.Url).ToList();
 		}
 
 		private int GetValue()
