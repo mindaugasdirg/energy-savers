@@ -1,5 +1,8 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import ShowChartIcon from "@mui/icons-material/ShowChart";
+import Box from "@mui/material/Box";
+import { red } from "@mui/material/colors";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -33,7 +36,31 @@ const pieData = ({ labels, values }: PieData) => ({
 });
 
 export const EnergyPie = ({ data }: { data: PieData }) => (
-  <div>
-    <Pie data={pieData(data)} />
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    <h1>Good Morning Joey!</h1>
+    <Box
+      sx={{
+        width: "90%",
+        padding: "24px 20px", // theme padding
+        border: "1px solid rgba(0, 0, 0, 0.12)",
+        borderRadius: 4,
+      }}
+    >
+      <h3>
+        Your energy utilisation in the last 7 days increased by 15%
+        <span>
+          <ShowChartIcon sx={{ color: "red", marginLeft: "8px" }} />
+        </span>
+      </h3>
+
+      <Pie data={pieData(data)} />
+    </Box>
   </div>
 );
