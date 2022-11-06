@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using EnergySavers.API.Models.Response.Models;
 // using EnergySavers.Api.Models.Options;
 using Google.Cloud.Vision.V1;
 using Microsoft.Extensions.Options;
@@ -11,8 +12,7 @@ namespace EnergySavers.API.Services
 {
 	public interface IImageService
 	{
-		List<string> ResolveLabels(string imageBase64);
-		List<string> GetSimilarImages(string imageBase64);
+		List<ItemResponse> GetItems(string imageBase64);
 	}
 
     public class ImageService : IImageService
@@ -26,7 +26,18 @@ namespace EnergySavers.API.Services
 			// this.options = options.Value;
 		}
 
-        public List<string> ResolveLabels(string imageBase64)
+		public List<ItemResponse> GetItems(string imageBase64)
+		{
+			var labels = this.ResolveLabels(imageBase64);
+			var images = this.GetSimilarImages(imageBase64);
+
+			var item1 = new ItemResponse(labels[0], images[0], "Amazon", 69);
+			var item2 = new ItemResponse(labels[0], images[1], "Ebay", 40);
+
+			return new[]{item1, item2}.ToList();
+		}
+
+        private List<string> ResolveLabels(string imageBase64)
 		{
 			var labels = new List<string>();
 			byte[] binaryImage = Convert.FromBase64String(imageBase64);
@@ -39,7 +50,7 @@ namespace EnergySavers.API.Services
 			return labels;
 		}
 
-		public List<string> GetSimilarImages(string imageBase64)
+		private List<string> GetSimilarImages(string imageBase64)
 		{
 			var client = ImageAnnotatorClient.Create();
             var psClient = ProductSearchClient.Create();
