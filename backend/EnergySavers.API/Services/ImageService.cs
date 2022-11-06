@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using EnergySavers.API.Models.Response.Models;
-// using EnergySavers.Api.Models.Options;
 using Google.Cloud.Vision.V1;
 using Microsoft.Extensions.Options;
 
@@ -18,12 +17,22 @@ namespace EnergySavers.API.Services
     public class ImageService : IImageService
     {
 		private HttpClient httpClient = new HttpClient();
-		// private readonly ClimateApiOptions options;
+		private Random rnd = new Random();
+
+		private string[] providers = {
+			"Amazon",
+			"Ebay",
+			"Eco-shop",
+			"Stuff-all-day.com",
+			"Target",
+			"Etsy",
+			"Vinted",
+			"Easy",
+			"AliExpress"
+		};
 
 		public ImageService()
-		// public ImageService(IOptions<ClimateApiOptions> options)
 		{
-			// this.options = options.Value;
 		}
 
 		public List<ItemResponse> GetItems(string imageBase64)
@@ -31,8 +40,8 @@ namespace EnergySavers.API.Services
 			var labels = this.ResolveLabels(imageBase64);
 			var images = this.GetSimilarImages(imageBase64);
 
-			var item1 = new ItemResponse(labels[0], images[0], "Amazon", 69);
-			var item2 = new ItemResponse(labels[0], images[1], "Ebay", 40);
+			var item1 = new ItemResponse(labels[0], images[0], this.GetProvider(), this.GetValue());
+			var item2 = new ItemResponse(labels[0], images[1], this.GetProvider(), this.GetValue());
 
 			return new[]{item1, item2}.ToList();
 		}
@@ -44,9 +53,7 @@ namespace EnergySavers.API.Services
             var client = ImageAnnotatorClient.Create();
             var image = Image.FromBytes(binaryImage);
             var detectedLabels = client.DetectLabels(image);
-			labels = detectedLabels.Select(label => label.Description).ToList();
-			// SearchActivity(labels[0]);
-			// ShootRequest();
+			labels = detectedLabels.OrderBy(x => x.Score).Select(label => label.Description).ToList();
 			return labels;
 		}
 
@@ -65,46 +72,25 @@ namespace EnergySavers.API.Services
 
             var response = client.BatchAnnotateImages(new[] { request });
 
-            var results = response.Responses[0].WebDetection.VisuallySimilarImages;
-            
-            return results.Select(x => x.Url).ToList();
+            var result = response.Responses[0].WebDetection;
+			Console.WriteLine("-------------");
+			Console.WriteLine(result.BestGuessLabels[0]);
+			Console.WriteLine("-------------");
+
+			return result?.FullMatchingImages.Count >= 2 ?
+				result.FullMatchingImages.Select(x => x.Url).ToList()
+				: result?.VisuallySimilarImages.Select(x => x.Url).ToList();
 		}
 
+		private int GetValue()
+		{
+			return rnd.Next(100);
+		}
 
+		private string GetProvider()
+		{
+			return this.providers[rnd.Next(providers.Length)];
+		}
 
-		private string GetEnergyData(){
-
-
-			return "";
-		} 
-
-		// private void SearchActivity(string label){
-		// 	var url = "https://beta3.api.climatiq.io/search?query=light+duty+trucks&year=2021";
-		// 	httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", options.ApiKey);
-		// 	var result = httpClient.GetAsync(url).Result;	
-		// 	JsonNode data = JsonSerializer.Deserialize<JsonNode>(result.Content.ReadAsStream());
-		// 	Console.WriteLine(data["results"].AsArray()[0]["activity_id"].GetValue<string>());
-		// 	Console.WriteLine(data["results"].AsArray()[0]["activity_id"].GetValue<string>());
-		// }
-
-		// private void ShootRequest(){
-		// 	var url = "https://beta3.api.climatiq.io/estimate";
-		// 	httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", options.ApiKey);
-		// 	string jsonString =
-		// 	@"{
-		// 		""emission_factor"": {
-		// 			""activity_id"": ""heat-and-steam-type_purchased""
-		// 		},
-		// 		""parameters"": {
-		// 			""energy"": 100,
-		// 			""energy_unit"": ""kWh""
-		// 		}
-		// 	}
-		// 	";
-		// 	var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-		// 	var result = httpClient.PostAsync(url, content).Result;	
-		// 	JsonNode data = JsonSerializer.Deserialize<JsonNode>(result.Content.ReadAsStream());
-		// 	Console.WriteLine(data["co2e"].GetValue<double>());
-		// }
 	}
 }
